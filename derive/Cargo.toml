@@ -1,9 +1,13 @@
 [package]
-name = "bit_collection"
+name = "bit_collection_derive"
 version = "0.1.0"
 authors = ["Nikolai Vazquez"]
 license = "MIT/Apache-2.0"
 repository = "https://github.com/nvzqz/bit-collection-rs"
 
+[lib]
+proc-macro = true
+
 [dependencies]
-bit_collection_derive = { version = "=0.1.0", path = "derive" }
+syn = "0.11"
+quote = "0.3"
