@@ -22,8 +22,13 @@ enum_impl! {
 
 fn test_collection<T: BitCollection>(all: &[T::Item])
     where
-        T::Item: Copy + Eq + Debug
+        T::Item: Copy + Eq + Debug + Into<T>
 {
+    for &x in all {
+        let val = T::full();
+        assert!(val.contains(x));
+    }
+
     assert_eq!(T::full().collect::<Vec<_>>(), all);
 
     let rev_a = T::full().rev().collect::<Vec<_>>();

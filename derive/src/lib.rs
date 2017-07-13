@@ -209,6 +209,11 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
                     x
                 })
             }
+
+            #[inline]
+            fn contains<T: Into<Self>>(&self, x: T) -> bool {
+                self.#bits & x.into().#bits != 0
+            }
         }
     }
 }

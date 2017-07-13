@@ -135,4 +135,7 @@ pub trait BitCollection: DoubleEndedIterator + ExactSizeIterator {
 
     /// Removes the most significant bit from `self` and returns it.
     fn pop_msb(&mut self) -> Option<Self::Item>;
+
+    /// Returns whether `self` contains the value.
+    fn contains<T: Into<Self>>(&self, T) -> bool where Self: Sized;
 }
