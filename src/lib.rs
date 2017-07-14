@@ -1,20 +1,20 @@
 //! # Attributes
 //!
-//! - `bit_type`:
-//! > The type used to represent individual bits. This attribute is required.
+//! ## `bit_type`:
+//! The type used to represent individual bits. This attribute is required.
 //!
-//! - `bit_mask`:
-//! > A mask indicating the valid bits of the collection.
-//! > If not provided, the mask is assumed to have all bits set (i.e. `!0`).
-//! > `BitCollection::full()` returns this value.
+//! ## `bit_mask`:
+//! A mask indicating the valid bits of the collection.
+//! If not provided, the mask is assumed to have all bits set (i.e. `!0`).
+//! `BitCollection::full()` returns this value.
 //!
-//! - `bit_inner`:
-//! > The suffix for retrieving the inner integer value of the bit type.
-//! > It expands to `$value.$bit_inner`. Because of this, the provided retriever
-//! > must be visible where the derive is located.
-//! >
-//! > If not provided, the bit type is assumed to be an `enum` that can be
-//! > casted to an integer.
+//! ## `bit_inner`:
+//! The suffix for retrieving the inner integer value of the bit type.
+//! It expands to `$value.$bit_inner`. Because of this, the provided retriever
+//! must be visible where the derive is located.
+//!
+//! If not provided, the bit type is assumed to be an `enum` that can be
+//! casted to an integer.
 //!
 //! # Examples
 //!
