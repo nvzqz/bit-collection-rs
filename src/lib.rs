@@ -4,8 +4,11 @@
 //! The type used to represent individual bits. This attribute is required.
 //!
 //! ## `bit_mask`:
-//! A mask indicating the valid bits of the collection.
+//! A mask indicating the valid bits of the collection. This should be a
+//! constant expression.
+//!
 //! If not provided, the mask is assumed to have all bits set (i.e. `!0`).
+//!
 //! `BitCollection::full()` returns this value.
 //!
 //! ## `bit_inner`:
