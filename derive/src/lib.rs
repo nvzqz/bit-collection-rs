@@ -246,17 +246,17 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
 
             #[inline]
             fn insert<T: Into<Self>>(&mut self, x: T) {
-                self.#bits |= x.into().#bits
+                self.#bits |= x.into().#bits;
             }
 
             #[inline]
             fn toggle<T: Into<Self>>(&mut self, x: T) {
-                self.#bits ^= x.into().#bits
+                self.#bits ^= x.into().#bits;
             }
 
             #[inline]
             fn intersect<T: Into<Self>>(&mut self, x: T) {
-                self.#bits &= x.into().#bits
+                self.#bits &= x.into().#bits;
             }
         }
     }
