@@ -214,6 +214,50 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
             fn contains<T: Into<Self>>(&self, x: T) -> bool {
                 self.#bits & x.into().#bits != 0
             }
+
+            #[inline]
+            fn removing<T: Into<Self>>(self, x: T) -> Self {
+                let x = self.#bits & !x.into().#bits;
+                #from_x
+            }
+
+            #[inline]
+            fn inserting<T: Into<Self>>(self, x: T) -> Self {
+                let x = self.#bits | x.into().#bits;
+                #from_x
+            }
+
+            #[inline]
+            fn toggling<T: Into<Self>>(self, x: T) -> Self {
+                let x = self.#bits ^ x.into().#bits;
+                #from_x
+            }
+
+            #[inline]
+            fn intersecting<T: Into<Self>>(self, x: T) -> Self {
+                let x = self.#bits & x.into().#bits;
+                #from_x
+            }
+
+            #[inline]
+            fn remove<T: Into<Self>>(&mut self, x: T) {
+                self.#bits &= !x.into().#bits;
+            }
+
+            #[inline]
+            fn insert<T: Into<Self>>(&mut self, x: T) {
+                self.#bits |= x.into().#bits
+            }
+
+            #[inline]
+            fn toggle<T: Into<Self>>(&mut self, x: T) {
+                self.#bits ^= x.into().#bits
+            }
+
+            #[inline]
+            fn intersect<T: Into<Self>>(&mut self, x: T) {
+                self.#bits &= x.into().#bits
+            }
         }
     }
 }
