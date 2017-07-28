@@ -166,16 +166,16 @@ pub trait BitCollection: DoubleEndedIterator + ExactSizeIterator {
     }
 
     /// Removes the value from `self`.
-    fn remove<T: Into<Self>>(&mut self, x: T) where Self: Sized;
+    fn remove<T: Into<Self>>(&mut self, T) where Self: Sized;
 
     /// Inserts the value into `self`.
-    fn insert<T: Into<Self>>(&mut self, x: T) where Self: Sized;
+    fn insert<T: Into<Self>>(&mut self, T) where Self: Sized;
 
     /// Toggles bits of the value in `self`.
-    fn toggle<T: Into<Self>>(&mut self, x: T) where Self: Sized;
+    fn toggle<T: Into<Self>>(&mut self, T) where Self: Sized;
 
     /// Intersects the bits of the value with `self`.
-    fn intersect<T: Into<Self>>(&mut self, x: T) where Self: Sized;
+    fn intersect<T: Into<Self>>(&mut self, T) where Self: Sized;
 
     /// Sets the bits of the value in `self` based on `condition`.
     #[inline]
