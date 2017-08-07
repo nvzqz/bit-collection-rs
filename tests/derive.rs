@@ -4,12 +4,6 @@ extern crate bit_collection;
 use std::fmt::Debug;
 use bit_collection::BitCollection;
 
-macro_rules! count {
-    () => { 0 };
-    ($x:tt) => { 1 };
-    ($x:tt $y:tt $z:tt $w:tt $($rest:tt)*) => { 4 + count!($($rest)*) };
-}
-
 macro_rules! enum_impl {
     ($(#[$attr:meta])* enum $ident:ident { $($x:ident),* $(,)* }) => {
         $(#[$attr])*
@@ -18,7 +12,10 @@ macro_rules! enum_impl {
         }
 
         impl $ident {
-            fn all() -> [$ident; count!($($x)*)] { [$($ident::$x),*] }
+            fn all() -> &'static [$ident] {
+                static ALL: &'static [$ident] = &[$($ident::$x),*];
+                ALL
+            }
         }
     }
 }
@@ -58,7 +55,7 @@ fn bits4_tuple_iter() {
     #[derive(BitCollection)]
     struct Bits4Tuple(u8);
 
-    test_collection::<Bits4Tuple>(&Value4::all());
+    test_collection::<Bits4Tuple>(Value4::all());
 }
 
 #[test]
@@ -67,7 +64,7 @@ fn bits4_struct_iter() {
     #[derive(BitCollection)]
     struct Bits4Struct { bits: u8 }
 
-    test_collection::<Bits4Struct>(&Value4::all());
+    test_collection::<Bits4Struct>(Value4::all());
 }
 
 #[test]
@@ -77,7 +74,7 @@ fn bits16_tuple_iter() {
     #[derive(BitCollection)]
     struct Bits16Tuple((((((((u16))))))));
 
-    test_collection::<Bits16Tuple>(&Value16::all());
+    test_collection::<Bits16Tuple>(Value16::all());
 }
 
 #[test]
@@ -89,5 +86,5 @@ fn bits16_struct_iter() {
         inner: u16
     }
 
-    test_collection::<Bits16Struct>(&Value16::all());
+    test_collection::<Bits16Struct>(Value16::all());
 }
