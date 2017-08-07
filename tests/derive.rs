@@ -1,4 +1,7 @@
 #[macro_use]
+extern crate lazy_static;
+
+#[macro_use]
 extern crate bit_collection;
 
 use std::fmt::Debug;
@@ -22,14 +25,38 @@ macro_rules! enum_impl {
 
 enum_impl! {
     #[derive(Copy, Clone, Debug, Eq, PartialEq)]
-    enum Value4 { A, B, C, D }
+    enum Value4Enum { A, B, C, D }
 }
 
 enum_impl! {
     #[derive(Copy, Clone, Debug, Eq, PartialEq)]
-    enum Value16 {
+    enum Value16Enum {
         A, B, C, D, E, F, G, H,
         I, J, K, L, M, N, O, P,
+    }
+}
+
+#[derive(Copy, Clone, Debug, Eq, PartialEq)]
+struct Value4Struct(u8);
+
+impl Value4Struct {
+    fn all() -> &'static [Value4Struct] {
+        lazy_static! {
+            static ref ALL: Vec<Value4Struct> = (0..4).map(|x| Value4Struct(x)).collect();
+        }
+        &ALL
+    }
+}
+
+#[derive(Copy, Clone, Debug, Eq, PartialEq)]
+struct Value16Struct(u8);
+
+impl Value16Struct {
+    fn all() -> &'static [Value16Struct] {
+        lazy_static! {
+            static ref ALL: Vec<Value16Struct> = (0..16).map(|x| Value16Struct(x)).collect();
+        }
+        &ALL
     }
 }
 
@@ -50,19 +77,15 @@ fn test_collection<T: BitCollection>(all: &[T::Item])
 }
 
 macro_rules! impl_test {
-    ($fn:ident, $bit:ident, $inner:ty, $mask:expr) => {
-        impl_test! { $fn $bit $inner; #[bit($bit, mask = $mask)] #[derive(BitCollection)] }
-    };
-    ($fn:ident, $bit:ident, $inner:ty) => {
-        impl_test! { $fn $bit $inner; #[bit($bit)] #[derive(BitCollection)] }
-    };
-    ($fn:ident $bit:ident $inner:ty; $(#[$attr:meta])*) => {
+    ($fn:ident, $bit:ident, $inner:ty, #[$attr:meta]) => {
         #[test]
         fn $fn() {
-            $(#[$attr])*
+            #[$attr]
+            #[derive(BitCollection)]
             struct Tuple($inner);
 
-            $(#[$attr])*
+            #[$attr]
+            #[derive(BitCollection)]
             struct Struct { bits: $inner }
 
             let all = $bit::all();
@@ -70,8 +93,10 @@ macro_rules! impl_test {
             test_collection::<Tuple>(all);
             test_collection::<Struct>(all);
         }
-    };
+    }
 }
 
-impl_test!(bits4, Value4, u8, "0b1111");
-impl_test!(bits16, Value16, u16);
+impl_test!(bits4_enum,    Value4Enum,    u8,  #[bit(Value4Enum,   mask = "0b1111")]);
+impl_test!(bits4_struct,  Value4Struct,  u8,  #[bit(Value4Struct, mask = "0b1111", retr = "0")]);
+impl_test!(bits16_enum,   Value16Enum,   u16, #[bit(Value16Enum)]);
+impl_test!(bits16_struct, Value16Struct, u16, #[bit(Value16Struct, retr = "0")]);

@@ -7,3 +7,6 @@ repository = "https://github.com/nvzqz/bit-collection-rs"
 
 [dependencies]
 bit_collection_derive = { version = "=0.1.0", path = "derive" }
+
+[dev-dependencies]
+lazy_static = "0.2.*"
