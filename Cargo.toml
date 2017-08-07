@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["Nikolai Vazquez"]
 license = "MIT/Apache-2.0"
 repository = "https://github.com/nvzqz/bit-collection-rs"
+description = "A trait for iterating over the individual bits of a collection."
 
 [dependencies]
 bit_collection_derive = { version = "=0.1.0", path = "derive" }
