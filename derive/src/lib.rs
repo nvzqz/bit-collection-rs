@@ -64,9 +64,9 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
                 }
             }
         };
-        backing = Ident::from(extract_ty()
+        backing = extract_ty()
             .segments.get(0).expect("No backing type found.")
-            .ident.as_ref());
+            .ident.as_ref().into();
 
         let masked_x = quote!(x & #mask);
 
@@ -76,7 +76,7 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
             let from_masked = quote!(#name{#bits: #masked_x});
             (bits, from, from_masked)
         } else {
-            (Ident::from("0"), quote!(#name(x)), quote!(#name(#masked_x)))
+            ("0".into(), quote!(#name(x)), quote!(#name(#masked_x)))
         }
     } else {
         panic!("Expected struct type.");
