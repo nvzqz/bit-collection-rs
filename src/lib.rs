@@ -1,9 +1,17 @@
-//! # Attributes
+//! # `#[bit]` Attribute
 //!
-//! ## `bit_type`:
-//! The type used to represent individual bits. This attribute is required.
+//! The `#[bit]` attribute is composed of three parts, two of which are optional
+//! in some cases. The components can be provided in any order.
 //!
-//! ## `bit_mask`:
+//! ## Type:
+//!
+//! The type used to represent individual bits. This part is required.
+//!
+//! ```txt
+//! #[bit(Type, ...)]
+//! ```
+//!
+//! ## Mask:
 //! A mask indicating the valid bits of the collection. This should be a
 //! constant expression.
 //!
@@ -11,13 +19,21 @@
 //!
 //! `BitCollection::full()` returns this value.
 //!
-//! ## `bit_inner`:
-//! The suffix for retrieving the inner integer value of the bit type.
-//! It expands to `$value.$bit_inner`. Because of this, the provided retriever
-//! must be visible where the derive is located.
+//! ```txt
+//! #[bit(..., mask = "0b11", ...)]
+//! ```
+//!
+//! ## Retriever:
+//! The suffix for retrieving the inner integer value of the bit type. It
+//! expands to `$value.$retr`. Because of this, the provided retriever must be
+//! visible where the derive is located.
 //!
 //! If not provided, the bit type is assumed to be an `enum` that can be
 //! casted to an integer.
+//!
+//! ```txt
+//! #[bit(..., retr = "inner", ...)]
+//! ```
 //!
 //! # Examples
 //!
@@ -34,9 +50,7 @@
 //! pub struct Square(u8);
 //!
 //! /// A set of sixty-four `Square`s.
-//! #[bit_type = "Square"] // Type used to represent individual bits
-//! #[bit_mask = "!0"]     // Mask representing all bits set (this is the default)
-//! #[bit_retr = "0"]      // Retriever for inner value of the bit type
+//! #[bit(Square, mask = "!0", retr = "0")]
 //! #[derive(BitCollection)]
 //! pub struct Bitboard(u64);
 //!
@@ -58,8 +72,7 @@
 //! }
 //!
 //! /// A set of `CastleRight`s.
-//! #[bit_type = "CastleRight"]
-//! #[bit_mask = "0b1111"]
+//! #[bit(CastleRight, mask = "0b1111")]
 //! #[derive(BitCollection)]
 //! pub struct CastleRights {
 //!     bits: u8

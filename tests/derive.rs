@@ -54,8 +54,7 @@ fn test_collection<T: BitCollection>(all: &[T::Item])
 
 #[test]
 fn bits4_tuple_iter() {
-    #[bit_mask = "0b1111"]
-    #[bit_type = "Value4"]
+    #[bit(Value4, mask = "0b1111")]
     #[derive(BitCollection)]
     struct Bits4Tuple(u8);
 
@@ -64,8 +63,7 @@ fn bits4_tuple_iter() {
 
 #[test]
 fn bits4_struct_iter() {
-    #[bit_mask = "0b1111"]
-    #[bit_type = "Value4"]
+    #[bit(Value4, mask = "0b1111")]
     #[derive(BitCollection)]
     struct Bits4Struct { bits: u8 }
 
@@ -75,7 +73,7 @@ fn bits4_struct_iter() {
 #[test]
 fn bits16_tuple_iter() {
     // Should work regardless of parentheses
-    #[bit_type = "Value16"]
+    #[bit(Value16)]
     #[derive(BitCollection)]
     struct Bits16Tuple((((((((u16))))))));
 
@@ -84,7 +82,7 @@ fn bits16_tuple_iter() {
 
 #[test]
 fn bits16_struct_iter() {
-    #[bit_type = "Value16"]
+    #[bit(Value16)]
     #[derive(BitCollection)]
     struct Bits16Struct {
         // Should work with any identifier

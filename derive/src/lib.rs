@@ -6,19 +6,36 @@ extern crate proc_macro;
 extern crate syn;
 
 use proc_macro::TokenStream;
-use syn::{Body, Lit, MetaItem, Ty};
+use syn::{Body, Lit, MetaItem, NestedMetaItem, Ty};
 use quote::Ident as Ident;
 
-#[proc_macro_derive(BitCollection, attributes(bit_type, bit_mask, bit_retr))]
+#[proc_macro_derive(BitCollection, attributes(bit))]
 pub fn bit_collection(input: TokenStream) -> TokenStream {
     let ast = syn::parse_derive_input(&input.to_string()).unwrap();
     impl_bit_collection(&ast).parse().unwrap()
 }
 
 fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
+    let bit_list = ast.attrs.iter().filter_map(|a| {
+        if let MetaItem::List(ref ident, ref vec) = a.value {
+            if ident.as_ref() == "bit" {
+                return Some(vec);
+            }
+        }
+        None
+    }).next().expect("No `bit` attribute found.");
+
+    let item = bit_list.iter().filter_map(|x| {
+        if let NestedMetaItem::MetaItem(MetaItem::Word(ref ident)) = *x {
+            Some(Ident::from(ident.as_ref()))
+        } else {
+            None
+        }
+    }).next().expect("No bit item found.");
+
     let get_attr = |x: &str| {
-        ast.attrs.iter().filter_map(|a| {
-            if let MetaItem::NameValue(ref ident, ref val) = a.value {
+        bit_list.iter().filter_map(|a| {
+            if let NestedMetaItem::MetaItem(MetaItem::NameValue(ref ident, ref val)) = *a {
                 if ident == x {
                     if let Lit::Str(ref s, _) = *val {
                         return Some(Ident::from(s.as_ref()))
@@ -30,8 +47,7 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
     };
 
     let name = Ident::from(ast.ident.as_ref());
-    let item = get_attr("bit_type").expect("No `bit_type` attribute found.");
-    let mask = get_attr("bit_mask").unwrap_or("!0".into());
+    let mask = get_attr("mask").unwrap_or_else(|| "!0".into());
     let backing: Ident;
 
     let (bits, from_x, from_x_masked) = if let Body::Struct(ref data) = ast.body {
@@ -91,7 +107,7 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
         }
     };
 
-    let convert_x = if let Some(a) = get_attr("bit_retr") {
+    let convert_x = if let Some(a) = get_attr("retr") {
         quote!(x.#a)
     } else {
         quote!(x as #backing)
