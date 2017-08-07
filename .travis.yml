@@ -1,0 +1,8 @@
+language: rust
+rust: stable
+matrix:
+  include:
+    - os: osx
+    - os: linux
+script:
+  - cargo test
