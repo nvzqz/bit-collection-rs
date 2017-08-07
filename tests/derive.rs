@@ -49,42 +49,29 @@ fn test_collection<T: BitCollection>(all: &[T::Item])
     assert_eq!(&rev_a, &rev_b);
 }
 
-#[test]
-fn bits4_tuple_iter() {
-    #[bit(Value4, mask = "0b1111")]
-    #[derive(BitCollection)]
-    struct Bits4Tuple(u8);
+macro_rules! impl_test {
+    ($fn:ident, $bit:ident, $inner:ty, $mask:expr) => {
+        impl_test! { $fn $bit $inner; #[bit($bit, mask = $mask)] #[derive(BitCollection)] }
+    };
+    ($fn:ident, $bit:ident, $inner:ty) => {
+        impl_test! { $fn $bit $inner; #[bit($bit)] #[derive(BitCollection)] }
+    };
+    ($fn:ident $bit:ident $inner:ty; $(#[$attr:meta])*) => {
+        #[test]
+        fn $fn() {
+            $(#[$attr])*
+            struct Tuple($inner);
 
-    test_collection::<Bits4Tuple>(Value4::all());
+            $(#[$attr])*
+            struct Struct { bits: $inner }
+
+            let all = $bit::all();
+
+            test_collection::<Tuple>(all);
+            test_collection::<Struct>(all);
+        }
+    };
 }
 
-#[test]
-fn bits4_struct_iter() {
-    #[bit(Value4, mask = "0b1111")]
-    #[derive(BitCollection)]
-    struct Bits4Struct { bits: u8 }
-
-    test_collection::<Bits4Struct>(Value4::all());
-}
-
-#[test]
-fn bits16_tuple_iter() {
-    // Should work regardless of parentheses
-    #[bit(Value16)]
-    #[derive(BitCollection)]
-    struct Bits16Tuple((((((((u16))))))));
-
-    test_collection::<Bits16Tuple>(Value16::all());
-}
-
-#[test]
-fn bits16_struct_iter() {
-    #[bit(Value16)]
-    #[derive(BitCollection)]
-    struct Bits16Struct {
-        // Should work with any identifier
-        inner: u16
-    }
-
-    test_collection::<Bits16Struct>(Value16::all());
-}
+impl_test!(bits4, Value4, u8, "0b1111");
+impl_test!(bits16, Value16, u16);
