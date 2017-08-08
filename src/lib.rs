@@ -105,6 +105,7 @@ use std as std_provider;
 #[cfg(not(feature = "std"))]
 use core as std_provider;
 
+use std_provider::iter::FromIterator;
 use std_provider::ops::Not;
 
 // Reexport derive macro.
@@ -118,6 +119,8 @@ pub use bit_collection_derive::*;
 pub trait BitCollection: From<<Self as Iterator>::Item>
     + DoubleEndedIterator
     + ExactSizeIterator
+    + FromIterator<<Self as Iterator>::Item>
+    + Extend<<Self as Iterator>::Item>
     + Not<Output=Self>
 {
     /// Returns a full instance with all bits set.

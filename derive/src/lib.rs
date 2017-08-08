@@ -1,4 +1,4 @@
-#![recursion_limit="256"]
+#![recursion_limit="384"]
 
 #[macro_use]
 extern crate quote;
@@ -142,6 +142,21 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
             #[inline]
             fn not(self) -> Self {
                 (!self.#bits).into()
+            }
+        }
+
+        impl #std::iter::FromIterator<#item> for #name {
+            #[inline]
+            fn from_iter<T: IntoIterator<Item=#item>>(iter: T) -> Self {
+                iter.into_iter().fold(Self::empty(), BitCollection::inserting)
+            }
+        }
+
+        impl Extend<#item> for #name {
+            #[inline]
+            fn extend<T: IntoIterator<Item=#item>>(&mut self, iter: T) {
+                use #std::iter::FromIterator;
+                self.insert(Self::from_iter(iter));
             }
         }
 
