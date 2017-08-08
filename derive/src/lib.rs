@@ -124,7 +124,8 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
             #[inline(always)]
             fn from(x: #item) -> #name {
                 const ONE: #backing = 1;
-                #name::from(ONE << #convert_x)
+                let x = ONE << #convert_x;
+                #from_x
             }
         }
 
