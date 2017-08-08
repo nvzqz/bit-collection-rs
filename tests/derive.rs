@@ -3,10 +3,10 @@
 #[macro_use]
 extern crate bit_collection;
 
-#[cfg(not(feature = "std"))]
-use core as std;
+#[cfg(feature = "std")]
+extern crate core;
 
-use std::fmt::Debug;
+use core::fmt::Debug;
 use bit_collection::BitCollection;
 
 macro_rules! enum_impl {
