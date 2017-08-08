@@ -101,12 +101,10 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
 #[cfg(feature = "std")]
-use std as std_provider;
-#[cfg(not(feature = "std"))]
-use core as std_provider;
+extern crate core;
 
-use std_provider::iter::FromIterator;
-use std_provider::ops::Not;
+use core::iter::FromIterator;
+use core::ops::Not;
 
 // Reexport derive macro.
 #[allow(unused_imports)]
