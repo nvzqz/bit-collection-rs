@@ -21,6 +21,7 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
     } else {
         "core".into()
     };
+    let ops = quote! { ::#std_source::ops };
 
     let bit_list = ast.attrs.iter().filter_map(|a| {
         if let MetaItem::List(ref ident, ref vec) = a.value {
@@ -133,6 +134,15 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
             #[inline(always)]
             fn from(x: #backing) -> #name {
                 #from_x_masked
+            }
+        }
+
+        impl #ops::Not for #name {
+            type Output = Self;
+
+            #[inline]
+            fn not(self) -> Self {
+                (!self.#bits).into()
             }
         }
 

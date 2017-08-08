@@ -100,6 +100,13 @@
 
 #![cfg_attr(not(feature = "std"), no_std)]
 
+#[cfg(feature = "std")]
+use std as std_provider;
+#[cfg(not(feature = "std"))]
+use core as std_provider;
+
+use std_provider::ops::Not;
+
 // Reexport derive macro.
 #[allow(unused_imports)]
 #[macro_use]
@@ -108,7 +115,11 @@ extern crate bit_collection_derive;
 pub use bit_collection_derive::*;
 
 /// A type that represents a collection of bits that can be iterated over.
-pub trait BitCollection: DoubleEndedIterator + ExactSizeIterator + From<<Self as Iterator>::Item> {
+pub trait BitCollection: From<<Self as Iterator>::Item>
+    + DoubleEndedIterator
+    + ExactSizeIterator
+    + Not<Output=Self>
+{
     /// Returns a full instance with all bits set.
     fn full() -> Self;
 
