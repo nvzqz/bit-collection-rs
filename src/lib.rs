@@ -110,10 +110,10 @@ pub use bit_collection_derive::*;
 /// A type that represents a collection of bits that can be iterated over.
 pub trait BitCollection: DoubleEndedIterator + ExactSizeIterator {
     /// Returns a full instance with all bits set.
-    fn full() -> Self;
+    fn full() -> Self where Self: Sized;
 
     /// Returns an empty instance with no bits set.
-    fn empty() -> Self;
+    fn empty() -> Self where Self: Sized;
 
     /// Returns whether `self` is empty.
     fn is_empty(&self) -> bool;
