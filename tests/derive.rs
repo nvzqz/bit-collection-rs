@@ -84,9 +84,9 @@ fn test_collection<T: BitCollection>(all: &[T::Item])
 }
 
 macro_rules! impl_test {
-    ($fn:ident, $bit:ident, $inner:ty, #[$attr:meta]) => {
+    ($func:ident, $bit:ident, $inner:ty, #[$attr:meta]) => {
         #[test]
-        fn $fn() {
+        fn $func() {
             #[$attr]
             #[derive(BitCollection)]
             struct Tuple($inner);
