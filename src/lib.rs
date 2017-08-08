@@ -42,6 +42,8 @@
 //! is a square on a chess board.
 //!
 //! ```
+//! # #[cfg(not(feature = "std"))]
+//! # extern crate core;
 //! #[macro_use]
 //! extern crate bit_collection;
 //! use bit_collection::BitCollection;
@@ -60,6 +62,8 @@
 //! We can also represent castle rights this way.
 //!
 //! ```
+//! # #[cfg(not(feature = "std"))]
+//! # extern crate core;
 //! # #[macro_use]
 //! # extern crate bit_collection;
 //! # use bit_collection::BitCollection;
@@ -93,6 +97,8 @@
 //! ```
 //!
 //! [bitboard]: https://chessprogramming.wikispaces.com/Bitboards
+
+#![cfg_attr(not(feature = "std"), no_std)]
 
 // Reexport derive macro.
 #[allow(unused_imports)]

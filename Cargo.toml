@@ -4,13 +4,17 @@ version = "0.1.0"
 authors = ["Nikolai Vazquez"]
 license = "MIT/Apache-2.0"
 repository = "https://github.com/nvzqz/bit-collection-rs"
+categories = ["no-std"]
 description = "A trait for iterating over the individual bits of a collection."
 
-[dependencies]
-bit_collection_derive = { version = "=0.1.0", path = "derive" }
-
-[dev-dependencies]
-lazy_static = "0.2.*"
+[dependencies.bit_collection_derive]
+version = "=0.1.0"
+path = "derive"
+default-features = false
 
 [badges]
 travis-ci = { repository = "nvzqz/bit-collection-rs" }
+
+[features]
+default = ["std"]
+std = ["bit_collection_derive/std"]

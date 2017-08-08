@@ -16,6 +16,12 @@ pub fn bit_collection(input: TokenStream) -> TokenStream {
 }
 
 fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
+    let std_source: Ident = if cfg!(feature = "std") {
+        "std".into()
+    } else {
+        "core".into()
+    };
+
     let bit_list = ast.attrs.iter().filter_map(|a| {
         if let MetaItem::List(ref ident, ref vec) = a.value {
             if ident.as_ref() == "bit" {
@@ -86,7 +92,7 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
 
     let item_from_raw = quote! {
         // Endian agnostic code integer to item conversion
-        match ::std::mem::size_of::<#item>() {
+        match ::#std_source::mem::size_of::<#item>() {
             1 => {
                 let raw = raw as u8;
                 #_item_from_raw
@@ -194,7 +200,7 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
 
             #[inline]
             unsafe fn msb_unchecked(&self) -> #item {
-                use std::mem::size_of;
+                use #std_source::mem::size_of;
                 let val = size_of::<#name>() * 8 - 1;
                 let raw = val ^ self.#bits.leading_zeros() as usize;
                 #item_from_raw

@@ -1,8 +1,10 @@
-#[macro_use]
-extern crate lazy_static;
+#![cfg_attr(not(feature = "std"), no_std)]
 
 #[macro_use]
 extern crate bit_collection;
+
+#[cfg(not(feature = "std"))]
+extern crate core as std;
 
 use std::fmt::Debug;
 use bit_collection::BitCollection;
@@ -41,10 +43,10 @@ struct Value4Struct(u8);
 
 impl Value4Struct {
     fn all() -> &'static [Value4Struct] {
-        lazy_static! {
-            static ref ALL: Vec<Value4Struct> = (0..4).map(|x| Value4Struct(x)).collect();
-        }
-        &ALL
+        static ALL: &'static [Value4Struct] = &[
+            Value4Struct(0), Value4Struct(1), Value4Struct(2), Value4Struct(3)
+        ];
+        ALL
     }
 }
 
@@ -53,10 +55,13 @@ struct Value16Struct(u8);
 
 impl Value16Struct {
     fn all() -> &'static [Value16Struct] {
-        lazy_static! {
-            static ref ALL: Vec<Value16Struct> = (0..16).map(|x| Value16Struct(x)).collect();
-        }
-        &ALL
+        static ALL: &'static [Value16Struct] = &[
+            Value16Struct(0),  Value16Struct(1),  Value16Struct(2),  Value16Struct(3),
+            Value16Struct(4),  Value16Struct(5),  Value16Struct(6),  Value16Struct(7),
+            Value16Struct(8),  Value16Struct(9),  Value16Struct(10), Value16Struct(11),
+            Value16Struct(12), Value16Struct(13), Value16Struct(14), Value16Struct(15),
+        ];
+        ALL
     }
 }
 
@@ -69,11 +74,13 @@ fn test_collection<T: BitCollection>(all: &[T::Item])
         assert!(val.contains(x));
     }
 
-    assert_eq!(T::full().collect::<Vec<_>>(), all);
+    for (a, &b) in T::full().zip(all.iter()) {
+        assert_eq!(a, b);
+    }
 
-    let rev_a = T::full().rev().collect::<Vec<_>>();
-    let rev_b = all.iter().rev().map(|&x| x).collect::<Vec<_>>();
-    assert_eq!(&rev_a, &rev_b);
+    for (a, &b) in T::full().rev().zip(all.iter().rev()) {
+        assert_eq!(a, b);
+    }
 }
 
 macro_rules! impl_test {
