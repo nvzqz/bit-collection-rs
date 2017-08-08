@@ -136,6 +136,51 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
             }
         }
 
+        impl<T: Into<#name>> #std::ops::BitAnd<T> for #name {
+            type Output = Self;
+
+            fn bitand(self, rhs: T) -> Self {
+                let x = self.#bits.bitand(rhs.into().#bits);
+                #from_x
+            }
+        }
+
+        impl<T: Into<#name>> #std::ops::BitAndAssign<T> for #name {
+            fn bitand_assign(&mut self, rhs: T) {
+                self.#bits.bitand_assign(rhs.into().#bits);
+            }
+        }
+
+        impl<T: Into<#name>> #std::ops::BitOr<T> for #name {
+            type Output = Self;
+
+            fn bitor(self, rhs: T) -> Self {
+                let x = self.#bits.bitor(rhs.into().#bits);
+                #from_x
+            }
+        }
+
+        impl<T: Into<#name>> #std::ops::BitOrAssign<T> for #name {
+            fn bitor_assign(&mut self, rhs: T) {
+                self.#bits.bitor_assign(rhs.into().#bits);
+            }
+        }
+
+        impl<T: Into<#name>> #std::ops::BitXor<T> for #name {
+            type Output = Self;
+
+            fn bitxor(self, rhs: T) -> Self {
+                let x = self.#bits.bitxor(rhs.into().#bits);
+                #from_x
+            }
+        }
+
+        impl<T: Into<#name>> #std::ops::BitXorAssign<T> for #name {
+            fn bitxor_assign(&mut self, rhs: T) {
+                self.#bits.bitxor_assign(rhs.into().#bits);
+            }
+        }
+
         impl #std::ops::Not for #name {
             type Output = Self;
 

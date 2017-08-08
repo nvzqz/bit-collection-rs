@@ -104,7 +104,7 @@
 extern crate core;
 
 use core::iter::FromIterator;
-use core::ops::Not;
+use core::ops;
 
 // Reexport derive macro.
 #[allow(unused_imports)]
@@ -119,7 +119,13 @@ pub trait BitCollection: From<<Self as Iterator>::Item>
     + ExactSizeIterator
     + FromIterator<<Self as Iterator>::Item>
     + Extend<<Self as Iterator>::Item>
-    + Not<Output=Self>
+    + ops::Not<Output=Self>
+    + ops::BitAnd<Output=Self>
+    + ops::BitAndAssign
+    + ops::BitOr<Output=Self>
+    + ops::BitOrAssign
+    + ops::BitXor<Output=Self>
+    + ops::BitXorAssign
 {
     /// Returns a full instance with all bits set.
     fn full() -> Self;
