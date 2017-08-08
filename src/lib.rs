@@ -108,12 +108,12 @@ extern crate bit_collection_derive;
 pub use bit_collection_derive::*;
 
 /// A type that represents a collection of bits that can be iterated over.
-pub trait BitCollection: DoubleEndedIterator + ExactSizeIterator {
+pub trait BitCollection: DoubleEndedIterator + ExactSizeIterator + From<<Self as Iterator>::Item> {
     /// Returns a full instance with all bits set.
-    fn full() -> Self where Self: Sized;
+    fn full() -> Self;
 
     /// Returns an empty instance with no bits set.
-    fn empty() -> Self where Self: Sized;
+    fn empty() -> Self;
 
     /// Returns whether `self` is empty.
     fn is_empty(&self) -> bool;
@@ -159,24 +159,24 @@ pub trait BitCollection: DoubleEndedIterator + ExactSizeIterator {
     fn pop_msb(&mut self) -> Option<Self::Item>;
 
     /// Returns whether `self` contains the value.
-    fn contains<T: Into<Self>>(&self, T) -> bool where Self: Sized;
+    fn contains<T: Into<Self>>(&self, T) -> bool;
 
     /// Returns the result of removing the value from `self`.
-    fn removing<T: Into<Self>>(self, T) -> Self where Self: Sized;
+    fn removing<T: Into<Self>>(self, T) -> Self;
 
     /// Returns the result of inserting the value into `self`.
-    fn inserting<T: Into<Self>>(self, T) -> Self where Self: Sized;
+    fn inserting<T: Into<Self>>(self, T) -> Self;
 
     /// Returns the result of toggling the bits of the value in `self`.
-    fn toggling<T: Into<Self>>(self, T) -> Self where Self: Sized;
+    fn toggling<T: Into<Self>>(self, T) -> Self;
 
     /// Returns the result of intersecting the bits of the value with `self`.
-    fn intersecting<T: Into<Self>>(self, T) -> Self where Self: Sized;
+    fn intersecting<T: Into<Self>>(self, T) -> Self;
 
     /// Returns the result of setting the bits of the value in `self` based on
     /// `condition`.
     #[inline]
-    fn setting<T: Into<Self>>(self, x: T, condition: bool) -> Self where Self: Sized {
+    fn setting<T: Into<Self>>(self, x: T, condition: bool) -> Self {
         if condition {
             self.inserting(x)
         } else {
@@ -185,20 +185,20 @@ pub trait BitCollection: DoubleEndedIterator + ExactSizeIterator {
     }
 
     /// Removes the value from `self`.
-    fn remove<T: Into<Self>>(&mut self, T) where Self: Sized;
+    fn remove<T: Into<Self>>(&mut self, T);
 
     /// Inserts the value into `self`.
-    fn insert<T: Into<Self>>(&mut self, T) where Self: Sized;
+    fn insert<T: Into<Self>>(&mut self, T);
 
     /// Toggles bits of the value in `self`.
-    fn toggle<T: Into<Self>>(&mut self, T) where Self: Sized;
+    fn toggle<T: Into<Self>>(&mut self, T);
 
     /// Intersects the bits of the value with `self`.
-    fn intersect<T: Into<Self>>(&mut self, T) where Self: Sized;
+    fn intersect<T: Into<Self>>(&mut self, T);
 
     /// Sets the bits of the value in `self` based on `condition`.
     #[inline]
-    fn set<T: Into<Self>>(&mut self, x: T, condition: bool) where Self: Sized {
+    fn set<T: Into<Self>>(&mut self, x: T, condition: bool) {
         if condition {
             self.insert(x);
         } else {
