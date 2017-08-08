@@ -6,3 +6,4 @@ matrix:
     - os: linux
 script:
   - cargo test
+  - cargo test --no-default-features
