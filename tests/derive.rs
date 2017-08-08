@@ -4,7 +4,7 @@
 extern crate bit_collection;
 
 #[cfg(not(feature = "std"))]
-extern crate core as std;
+use core as std;
 
 use std::fmt::Debug;
 use bit_collection::BitCollection;
