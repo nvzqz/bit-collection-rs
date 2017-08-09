@@ -1,4 +1,4 @@
-#![recursion_limit="384"]
+#![recursion_limit="512"]
 
 #[macro_use]
 extern crate quote;
@@ -178,6 +178,21 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
         impl<T: Into<#name>> #std::ops::BitXorAssign<T> for #name {
             fn bitxor_assign(&mut self, rhs: T) {
                 self.#bits.bitxor_assign(rhs.into().#bits);
+            }
+        }
+
+        impl<T: Into<#name>> #std::ops::Sub<T> for #name {
+            type Output = Self;
+
+            fn sub(self, rhs: T) -> Self {
+                let x = self.#bits & !rhs.into().#bits;
+                #from_x
+            }
+        }
+
+        impl<T: Into<#name>> #std::ops::SubAssign<T> for #name {
+            fn sub_assign(&mut self, rhs: T) {
+                self.#bits &= !rhs.into().#bits;
             }
         }
 

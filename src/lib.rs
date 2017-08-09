@@ -126,6 +126,8 @@ pub trait BitCollection: From<<Self as Iterator>::Item>
     + ops::BitOrAssign
     + ops::BitXor<Output=Self>
     + ops::BitXorAssign
+    + ops::Sub<Output=Self>
+    + ops::SubAssign
 {
     /// Returns a full instance with all bits set.
     fn full() -> Self;
