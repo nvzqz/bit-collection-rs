@@ -203,11 +203,11 @@ pub trait BitCollection: From<<Self as Iterator>::Item>
 
     /// Returns the result of setting the bits of the value in `self` based on
     /// `condition`.
-    fn setting<T: Into<Self>>(self, x: T, condition: bool) -> Self {
+    fn setting<T: Into<Self>>(self, other: T, condition: bool) -> Self {
         if condition {
-            self.inserting(x)
+            self.inserting(other)
         } else {
-            self.removing(x)
+            self.removing(other)
         }
     }
 
@@ -232,11 +232,11 @@ pub trait BitCollection: From<<Self as Iterator>::Item>
     }
 
     /// Sets the bits of the value in `self` based on `condition`.
-    fn set<T: Into<Self>>(&mut self, x: T, condition: bool) {
+    fn set<T: Into<Self>>(&mut self, other: T, condition: bool) {
         if condition {
-            self.insert(x);
+            self.insert(other);
         } else {
-            self.remove(x);
+            self.remove(other);
         }
     }
 }
