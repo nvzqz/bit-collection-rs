@@ -182,16 +182,24 @@ pub trait BitCollection: From<<Self as Iterator>::Item>
     fn contains<T: Into<Self>>(&self, T) -> bool;
 
     /// Returns the result of removing the value from `self`.
-    fn removing<T: Into<Self>>(self, T) -> Self;
+    fn removing<T: Into<Self>>(self, other: T) -> Self {
+        self - other.into()
+    }
 
     /// Returns the result of inserting the value into `self`.
-    fn inserting<T: Into<Self>>(self, T) -> Self;
+    fn inserting<T: Into<Self>>(self, other: T) -> Self {
+        self | other.into()
+    }
 
     /// Returns the result of toggling the bits of the value in `self`.
-    fn toggling<T: Into<Self>>(self, T) -> Self;
+    fn toggling<T: Into<Self>>(self, other: T) -> Self {
+        self ^ other.into()
+    }
 
     /// Returns the result of intersecting the bits of the value with `self`.
-    fn intersecting<T: Into<Self>>(self, T) -> Self;
+    fn intersecting<T: Into<Self>>(self, other: T) -> Self {
+        self & other.into()
+    }
 
     /// Returns the result of setting the bits of the value in `self` based on
     /// `condition`.
@@ -204,16 +212,24 @@ pub trait BitCollection: From<<Self as Iterator>::Item>
     }
 
     /// Removes the value from `self`.
-    fn remove<T: Into<Self>>(&mut self, T);
+    fn remove<T: Into<Self>>(&mut self, other: T) {
+        *self -= other.into();
+    }
 
     /// Inserts the value into `self`.
-    fn insert<T: Into<Self>>(&mut self, T);
+    fn insert<T: Into<Self>>(&mut self, other: T) {
+        *self |= other.into();
+    }
 
     /// Toggles bits of the value in `self`.
-    fn toggle<T: Into<Self>>(&mut self, T);
+    fn toggle<T: Into<Self>>(&mut self, other: T) {
+        *self ^= other.into();
+    }
 
     /// Intersects the bits of the value with `self`.
-    fn intersect<T: Into<Self>>(&mut self, T);
+    fn intersect<T: Into<Self>>(&mut self, other: T) {
+        *self &= other.into();
+    }
 
     /// Sets the bits of the value in `self` based on `condition`.
     fn set<T: Into<Self>>(&mut self, x: T, condition: bool) {
