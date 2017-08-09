@@ -195,7 +195,6 @@ pub trait BitCollection: From<<Self as Iterator>::Item>
 
     /// Returns the result of setting the bits of the value in `self` based on
     /// `condition`.
-    #[inline]
     fn setting<T: Into<Self>>(self, x: T, condition: bool) -> Self {
         if condition {
             self.inserting(x)
@@ -217,7 +216,6 @@ pub trait BitCollection: From<<Self as Iterator>::Item>
     fn intersect<T: Into<Self>>(&mut self, T);
 
     /// Sets the bits of the value in `self` based on `condition`.
-    #[inline]
     fn set<T: Into<Self>>(&mut self, x: T, condition: bool) {
         if condition {
             self.insert(x);
