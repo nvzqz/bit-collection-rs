@@ -233,7 +233,7 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
             type Item = #item;
 
             fn into_iter(self) -> Self::IntoIter {
-                BitIter(self)
+                self.into()
             }
         }
 
