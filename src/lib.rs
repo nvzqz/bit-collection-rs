@@ -46,7 +46,7 @@
 //! # extern crate core;
 //! #[macro_use]
 //! extern crate bit_collection;
-//! use bit_collection::BitCollection;
+//! use bit_collection::*;
 //!
 //! #[derive(Copy, Clone)]
 //! pub struct Square(u8);
@@ -66,7 +66,7 @@
 //! # extern crate core;
 //! # #[macro_use]
 //! # extern crate bit_collection;
-//! # use bit_collection::BitCollection;
+//! # use bit_collection::*;
 //! #[derive(Copy, Clone)]
 //! pub enum CastleRight {
 //!     WhiteKingside,
@@ -114,11 +114,10 @@ extern crate bit_collection_derive;
 pub use bit_collection_derive::*;
 
 /// A type that represents a collection of bits that can be iterated over.
-pub trait BitCollection: From<<Self as Iterator>::Item>
-    + DoubleEndedIterator
-    + ExactSizeIterator
-    + FromIterator<<Self as Iterator>::Item>
-    + Extend<<Self as Iterator>::Item>
+pub trait BitCollection: From<<Self as IntoIterator>::Item>
+    + IntoIterator<IntoIter=BitIter<Self>>
+    + FromIterator<<Self as IntoIterator>::Item>
+    + Extend<<Self as IntoIterator>::Item>
     + ops::Not<Output=Self>
     + ops::BitAnd<Output=Self>
     + ops::BitAndAssign
@@ -134,6 +133,9 @@ pub trait BitCollection: From<<Self as Iterator>::Item>
 
     /// An empty instance with no bits set.
     const EMPTY: Self;
+
+    /// Returns the number of bits set in `self`.
+    fn len(&self) -> usize;
 
     /// Returns whether `self` is empty.
     fn is_empty(&self) -> bool;
@@ -242,5 +244,48 @@ pub trait BitCollection: From<<Self as Iterator>::Item>
         } else {
             self.remove(other)
         }
+    }
+}
+
+/// An iterator over the bits of a `BitCollection`.
+#[derive(Copy, Clone, Eq, PartialEq, Debug)]
+pub struct BitIter<C: BitCollection>(pub C);
+
+impl<C: BitCollection> Iterator for BitIter<C> {
+    type Item = C::Item;
+
+    #[inline]
+    fn next(&mut self) -> Option<Self::Item> {
+        self.0.pop_lsb()
+    }
+
+    #[inline]
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        let len = self.len();
+        (len, Some(len))
+    }
+
+    #[inline]
+    fn count(self) -> usize {
+        self.len()
+    }
+
+    #[inline]
+    fn last(self) -> Option<Self::Item> {
+        self.0.msb()
+    }
+}
+
+impl<C: BitCollection> DoubleEndedIterator for BitIter<C> {
+    #[inline]
+    fn next_back(&mut self) -> Option<Self::Item> {
+        self.0.pop_msb()
+    }
+}
+
+impl<C: BitCollection> ExactSizeIterator for BitIter<C> {
+    #[inline]
+    fn len(&self) -> usize {
+        self.0.len()
     }
 }

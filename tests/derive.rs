@@ -7,7 +7,7 @@ extern crate bit_collection;
 extern crate core;
 
 use core::fmt::Debug;
-use bit_collection::BitCollection;
+use bit_collection::*;
 
 macro_rules! enum_impl {
     ($(#[$attr:meta])* enum $ident:ident { $($x:ident),* $(,)* }) => {
@@ -74,11 +74,11 @@ fn test_collection<T: BitCollection>(all: &[T::Item])
         assert!(val.contains(x));
     }
 
-    for (a, &b) in T::FULL.zip(all.iter()) {
+    for (a, &b) in T::FULL.into_iter().zip(all.iter()) {
         assert_eq!(a, b);
     }
 
-    for (a, &b) in T::FULL.rev().zip(all.iter().rev()) {
+    for (a, &b) in T::FULL.into_iter().rev().zip(all.iter().rev()) {
         assert_eq!(a, b);
     }
 }

@@ -228,42 +228,12 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
             }
         }
 
-        impl Iterator for #name {
+        impl IntoIterator for #name {
+            type IntoIter = BitIter<Self>;
             type Item = #item;
 
-            #[inline]
-            fn next(&mut self) -> Option<#item> {
-                self.pop_lsb()
-            }
-
-            #[inline]
-            fn size_hint(&self) -> (usize, Option<usize>) {
-                let len = self.len();
-                (len, Some(len))
-            }
-
-            #[inline]
-            fn count(self) -> usize {
-                self.len()
-            }
-
-            #[inline]
-            fn last(self) -> Option<#item> {
-                self.msb()
-            }
-        }
-
-        impl DoubleEndedIterator for #name {
-            #[inline]
-            fn next_back(&mut self) -> Option<#item> {
-                self.pop_msb()
-            }
-        }
-
-        impl ExactSizeIterator for #name {
-            #[inline]
-            fn len(&self) -> usize {
-                self.#bits.count_ones() as _
+            fn into_iter(self) -> Self::IntoIter {
+                BitIter(self)
             }
         }
 
@@ -271,6 +241,11 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
             const FULL: Self = #full;
 
             const EMPTY: Self = #empty;
+
+            #[inline]
+            fn len(&self) -> usize {
+                self.#bits.count_ones() as _
+            }
 
             #[inline]
             fn is_empty(&self) -> bool {
