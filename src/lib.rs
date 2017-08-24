@@ -247,6 +247,10 @@ pub trait BitCollection: From<<Self as IntoIterator>::Item>
 #[derive(Copy, Clone, Eq, PartialEq, Debug)]
 pub struct BitIter<C: BitCollection>(pub C);
 
+impl<C: BitCollection> From<C> for BitIter<C> {
+    fn from(bits: C) -> Self { BitIter(bits) }
+}
+
 impl<C: BitCollection> Iterator for BitIter<C> {
     type Item = C::Item;
 
