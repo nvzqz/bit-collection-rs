@@ -52,6 +52,7 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
         }).next()
     };
 
+    let zero = ::syn::Ident::new("0");
     let name = Ident::from(ast.ident.as_ref());
     let mask = get_attr("mask").unwrap_or_else(|| "!0".into());
     let backing: Ident;
@@ -76,8 +77,7 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
 
         let masked_x = quote!(x & #mask);
 
-        if let Some(ref x) = field.ident {
-            let bits        = Ident::from(x.as_ref());
+        if let Some(ref bits) = field.ident {
             let from        = quote!(#name{#bits: x});
             let from_masked = quote!(#name{#bits: #masked_x});
             let full        = quote!(#name{#bits: #mask});
@@ -85,7 +85,7 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
             (bits, from, from_masked, full, empty)
         } else {
             (
-                "0".into(),
+                &zero,
                 quote!(#name(x)),
                 quote!(#name(#masked_x)),
                 quote!(#name(#mask)),
