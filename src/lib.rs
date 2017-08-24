@@ -17,7 +17,7 @@
 //!
 //! If not provided, the mask is assumed to have all bits set (i.e. `!0`).
 //!
-//! `BitCollection::full()` returns this value.
+//! `BitCollection::FULL` returns this value.
 //!
 //! ```txt
 //! #[bit(..., mask = "0b11", ...)]
@@ -129,11 +129,11 @@ pub trait BitCollection: From<<Self as Iterator>::Item>
     + ops::Sub<Output=Self>
     + ops::SubAssign
 {
-    /// Returns a full instance with all bits set.
-    fn full() -> Self;
+    /// A full instance with all bits set.
+    const FULL: Self;
 
-    /// Returns an empty instance with no bits set.
-    fn empty() -> Self;
+    /// An empty instance with no bits set.
+    const EMPTY: Self;
 
     /// Returns whether `self` is empty.
     fn is_empty(&self) -> bool;

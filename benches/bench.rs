@@ -23,7 +23,7 @@ static ALL_BITS: [U8Bit; 8] = [
 struct U8Bits(u8);
 
 fn iter_with<T: BitCollection, U, F: FnMut(&mut T) -> Option<U>>(mut f: F) {
-    let mut bits = black_box(T::full());
+    let mut bits = black_box(T::FULL);
     while let Some(val) = f(&mut bits) {
         black_box(val);
     }
@@ -46,7 +46,7 @@ fn bench_pop_msb(b: &mut Bencher) {
 #[bench]
 fn bench_naive_iter(b: &mut Bencher) {
     b.iter(|| {
-        let mut bits = black_box(U8Bits::full());
+        let mut bits = black_box(U8Bits::FULL);
         for &bit in &ALL_BITS {
             if bits.contains(bit) {
                 bits.remove(bit);

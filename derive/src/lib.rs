@@ -56,7 +56,7 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
     let mask = get_attr("mask").unwrap_or_else(|| "!0".into());
     let backing: Ident;
 
-    let (bits, from_x, from_x_masked) = if let Body::Struct(ref data) = ast.body {
+    let (bits, from_x, from_x_masked, full, empty) = if let Body::Struct(ref data) = ast.body {
         let field = data.fields().get(0).expect("No fields found.");
 
         // Extract inner type that may be surrounded by parentheses
@@ -77,12 +77,20 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
         let masked_x = quote!(x & #mask);
 
         if let Some(ref x) = field.ident {
-            let bits = Ident::from(x.as_ref());
-            let from = quote!(#name{#bits: x});
+            let bits        = Ident::from(x.as_ref());
+            let from        = quote!(#name{#bits: x});
             let from_masked = quote!(#name{#bits: #masked_x});
-            (bits, from, from_masked)
+            let full        = quote!(#name{#bits: #mask});
+            let empty       = quote!(#name{#bits: 0});
+            (bits, from, from_masked, full, empty)
         } else {
-            ("0".into(), quote!(#name(x)), quote!(#name(#masked_x)))
+            (
+                "0".into(),
+                quote!(#name(x)),
+                quote!(#name(#masked_x)),
+                quote!(#name(#mask)),
+                quote!(#name(0))
+            )
         }
     } else {
         panic!("Expected struct type.");
@@ -208,7 +216,7 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
         impl #std::iter::FromIterator<#item> for #name {
             #[inline]
             fn from_iter<T: IntoIterator<Item=#item>>(iter: T) -> Self {
-                iter.into_iter().fold(Self::empty(), BitCollection::inserting)
+                iter.into_iter().fold(Self::EMPTY, BitCollection::inserting)
             }
         }
 
@@ -260,17 +268,9 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
         }
 
         impl BitCollection for #name {
-            #[inline]
-            fn full() -> #name {
-                let x = #mask;
-                #from_x
-            }
+            const FULL: Self = #full;
 
-            #[inline]
-            fn empty() -> #name {
-                let x = 0;
-                #from_x
-            }
+            const EMPTY: Self = #empty;
 
             #[inline]
             fn is_empty(&self) -> bool {

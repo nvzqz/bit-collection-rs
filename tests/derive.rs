@@ -70,15 +70,15 @@ fn test_collection<T: BitCollection>(all: &[T::Item])
         T::Item: Copy + Eq + Debug + Into<T>
 {
     for &x in all {
-        let val = T::full();
+        let val = T::FULL;
         assert!(val.contains(x));
     }
 
-    for (a, &b) in T::full().zip(all.iter()) {
+    for (a, &b) in T::FULL.zip(all.iter()) {
         assert_eq!(a, b);
     }
 
-    for (a, &b) in T::full().rev().zip(all.iter().rev()) {
+    for (a, &b) in T::FULL.rev().zip(all.iter().rev()) {
         assert_eq!(a, b);
     }
 }

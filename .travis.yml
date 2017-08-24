@@ -1,10 +1,9 @@
 language: rust
 matrix:
   include:
-    - rust: 1.15.0
-    - rust: stable
+    - rust: beta
       os: linux
-    - rust: stable
+    - rust: beta
       os: osx
 script:
   - cargo test
