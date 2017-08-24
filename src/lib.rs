@@ -143,9 +143,7 @@ pub trait BitCollection: From<<Self as IntoIterator>::Item>
     /// Returns the least significant bit in `self` if `self` is not empty.
     #[inline]
     fn lsb(&self) -> Option<Self::Item> {
-        if BitCollection::is_empty(self) {
-            None
-        } else {
+        if self.is_empty() { None } else {
             unsafe { Some(self.lsb_unchecked()) }
         }
     }
@@ -153,9 +151,7 @@ pub trait BitCollection: From<<Self as IntoIterator>::Item>
     /// Returns the most significant bit in `self` if `self` is not empty.
     #[inline]
     fn msb(&self) -> Option<Self::Item> {
-        if BitCollection::is_empty(self) {
-            None
-        } else {
+        if self.is_empty() { None } else {
             unsafe { Some(self.msb_unchecked()) }
         }
     }
