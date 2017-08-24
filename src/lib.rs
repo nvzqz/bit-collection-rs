@@ -212,31 +212,35 @@ pub trait BitCollection: From<<Self as Iterator>::Item>
     }
 
     /// Removes the value from `self`.
-    fn remove<T: Into<Self>>(&mut self, other: T) {
+    fn remove<T: Into<Self>>(&mut self, other: T) -> &mut Self {
         *self -= other.into();
+        self
     }
 
     /// Inserts the value into `self`.
-    fn insert<T: Into<Self>>(&mut self, other: T) {
+    fn insert<T: Into<Self>>(&mut self, other: T) -> &mut Self {
         *self |= other.into();
+        self
     }
 
     /// Toggles bits of the value in `self`.
-    fn toggle<T: Into<Self>>(&mut self, other: T) {
+    fn toggle<T: Into<Self>>(&mut self, other: T) -> &mut Self {
         *self ^= other.into();
+        self
     }
 
     /// Intersects the bits of the value with `self`.
-    fn intersect<T: Into<Self>>(&mut self, other: T) {
+    fn intersect<T: Into<Self>>(&mut self, other: T) -> &mut Self {
         *self &= other.into();
+        self
     }
 
     /// Sets the bits of the value in `self` based on `condition`.
-    fn set<T: Into<Self>>(&mut self, other: T, condition: bool) {
+    fn set<T: Into<Self>>(&mut self, other: T, condition: bool) -> &mut Self {
         if condition {
-            self.insert(other);
+            self.insert(other)
         } else {
-            self.remove(other);
+            self.remove(other)
         }
     }
 }
