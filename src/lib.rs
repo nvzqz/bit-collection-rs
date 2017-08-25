@@ -311,6 +311,7 @@ pub trait BitCollection: From<<Self as IntoIterator>::Item>
 pub struct BitIter<C: BitCollection>(pub C);
 
 impl<C: BitCollection> From<C> for BitIter<C> {
+    #[inline(always)]
     fn from(bits: C) -> Self { BitIter(bits) }
 }
 
