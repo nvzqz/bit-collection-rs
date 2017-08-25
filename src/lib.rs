@@ -7,7 +7,7 @@
 //!
 //! The type used to represent individual bits. This part is required.
 //!
-//! ```txt
+//! ```rust,ignore
 //! #[bit(Type, ...)]
 //! ```
 //!
@@ -19,7 +19,7 @@
 //!
 //! `BitCollection::FULL` returns this value.
 //!
-//! ```txt
+//! ```rust,ignore
 //! #[bit(..., mask = "0b11", ...)]
 //! ```
 //!
@@ -31,7 +31,7 @@
 //! If not provided, the bit type is assumed to be an `enum` that can be
 //! casted to an integer.
 //!
-//! ```txt
+//! ```rust,ignore
 //! #[bit(..., retr = "inner", ...)]
 //! ```
 //!
