@@ -191,6 +191,12 @@ pub trait BitCollection: From<<Self as IntoIterator>::Item>
     /// Returns whether `self` is empty.
     fn is_empty(&self) -> bool;
 
+    /// Returns `self` as an iterator over itself.
+    #[inline]
+    fn as_iter(&mut self) -> &mut BitIter<Self> {
+        unsafe { &mut *(self as *mut _ as *mut _) }
+    }
+
     /// Returns the least significant bit in `self` if `self` is not empty.
     #[inline]
     fn lsb(&self) -> Option<Self::Item> {
