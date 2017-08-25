@@ -138,6 +138,13 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
             }
         }
 
+        impl From<#iter<#name>> for #name {
+            #[inline(always)]
+            fn from(iter: #iter<#name>) -> #name {
+                iter.0
+            }
+        }
+
         impl From<#backing> for #name {
             #[inline(always)]
             fn from(x: #backing) -> #name {

@@ -149,6 +149,7 @@ pub use bit_collection_derive::*;
 
 /// A type that represents a collection of bits that can be iterated over.
 pub trait BitCollection: From<<Self as IntoIterator>::Item>
+    + From<BitIter<Self>>
     + IntoIterator<IntoIter=BitIter<Self>>
     + FromIterator<<Self as IntoIterator>::Item>
     + Extend<<Self as IntoIterator>::Item>
