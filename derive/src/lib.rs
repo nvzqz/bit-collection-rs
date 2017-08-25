@@ -97,27 +97,14 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
         panic!("Expected struct type.");
     };
 
-    let _item_from_raw = quote!(*(&raw as *const _ as *const _));
-
     let item_from_raw = quote! {
         // Endian agnostic code integer to item conversion
+        use #std::mem::transmute_copy;
         match ::#std::mem::size_of::<#item>() {
-            1 => {
-                let raw = raw as u8;
-                #_item_from_raw
-            },
-            2 => {
-                let raw = raw as u16;
-                #_item_from_raw
-            },
-            4 => {
-                let raw = raw as u32;
-                #_item_from_raw
-            },
-            8 => {
-                let raw = raw as u64;
-                #_item_from_raw
-            },
+            1 => transmute_copy(&(raw as u8)),
+            2 => transmute_copy(&(raw as u16)),
+            4 => transmute_copy(&(raw as u32)),
+            8 => transmute_copy(&(raw as u64)),
             _ => unreachable!(),
         }
     };
