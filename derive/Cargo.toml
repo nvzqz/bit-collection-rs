@@ -10,6 +10,9 @@ description = "Derive functionality for the `BitCollection` trait."
 [lib]
 proc-macro = true
 
+[badges]
+travis-ci = { repository = "nvzqz/bit-collection-rs" }
+
 [dependencies]
 syn = "0.11"
 quote = "0.3"
