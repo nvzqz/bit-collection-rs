@@ -2,9 +2,9 @@ language: rust
 matrix:
   include:
     - rust: beta
-      os: linux
     - rust: beta
       os: osx
+    - rust: nightly
 script:
   - cargo test
   - cargo test --no-default-features
