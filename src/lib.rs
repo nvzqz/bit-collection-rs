@@ -153,6 +153,7 @@
 #[cfg(feature = "std")]
 extern crate core;
 
+use core::borrow::{Borrow, BorrowMut};
 use core::iter::FromIterator;
 use core::ops;
 
@@ -313,6 +314,26 @@ pub struct BitIter<C: BitCollection>(pub C);
 impl<C: BitCollection> From<C> for BitIter<C> {
     #[inline(always)]
     fn from(bits: C) -> Self { BitIter(bits) }
+}
+
+impl<C: BitCollection> AsRef<C> for BitIter<C> {
+    #[inline(always)]
+    fn as_ref(&self) -> &C { &self.0 }
+}
+
+impl<C: BitCollection> AsMut<C> for BitIter<C> {
+    #[inline(always)]
+    fn as_mut(&mut self) -> &mut C { &mut self.0 }
+}
+
+impl<C: BitCollection> Borrow<C> for BitIter<C> {
+    #[inline(always)]
+    fn borrow(&self) -> &C { self.as_ref() }
+}
+
+impl<C: BitCollection> BorrowMut<C> for BitIter<C> {
+    #[inline(always)]
+    fn borrow_mut(&mut self) -> &mut C { self.as_mut() }
 }
 
 impl<C: BitCollection> Iterator for BitIter<C> {
