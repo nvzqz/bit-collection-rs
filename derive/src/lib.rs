@@ -257,6 +257,11 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
             }
 
             #[inline]
+            fn has_multiple(&self) -> bool {
+                self.#bits & self.#bits.wrapping_sub(1) != 0
+            }
+
+            #[inline]
             unsafe fn lsb_unchecked(&self) -> #item {
                 let raw = self.#bits.trailing_zeros();
                 #item_from_raw

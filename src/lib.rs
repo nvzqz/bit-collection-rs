@@ -192,6 +192,9 @@ pub trait BitCollection: From<<Self as IntoIterator>::Item>
     /// Returns whether `self` is empty.
     fn is_empty(&self) -> bool;
 
+    /// Returns whether `self` has multiple bits set.
+    fn has_multiple(&self) -> bool;
+
     /// Returns `self` as an iterator over itself.
     #[inline]
     fn as_iter(&mut self) -> &mut BitIter<Self> {
