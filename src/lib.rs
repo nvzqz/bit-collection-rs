@@ -58,7 +58,7 @@
 //! #[bit(..., retr = "inner", ...)]
 //! ```
 //!
-//! ## Iterator
+//! ## Iterator:
 //! The iterator for a given [`BitCollection`]. If [`BitIter`] isn't imported
 //! as-is, this option allows for specifying its module path.
 //!
