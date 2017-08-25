@@ -7,7 +7,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! bit_collection = "0.1.1"
+//! bit_collection = "0.2.0"
 //! ```
 //!
 //! and this to your crate root:
