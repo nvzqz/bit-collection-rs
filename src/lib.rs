@@ -252,6 +252,7 @@ pub trait BitCollection: From<<Self as IntoIterator>::Item>
 
     /// Returns the result of setting the bits of the value in `self` based on
     /// `condition`.
+    #[inline]
     fn setting<T: Into<Self>>(self, other: T, condition: bool) -> Self {
         if condition {
             self.inserting(other)
@@ -261,30 +262,35 @@ pub trait BitCollection: From<<Self as IntoIterator>::Item>
     }
 
     /// Removes the value from `self`.
+    #[inline]
     fn remove<T: Into<Self>>(&mut self, other: T) -> &mut Self {
         *self -= other.into();
         self
     }
 
     /// Inserts the value into `self`.
+    #[inline]
     fn insert<T: Into<Self>>(&mut self, other: T) -> &mut Self {
         *self |= other.into();
         self
     }
 
     /// Toggles bits of the value in `self`.
+    #[inline]
     fn toggle<T: Into<Self>>(&mut self, other: T) -> &mut Self {
         *self ^= other.into();
         self
     }
 
     /// Intersects the bits of the value with `self`.
+    #[inline]
     fn intersect<T: Into<Self>>(&mut self, other: T) -> &mut Self {
         *self &= other.into();
         self
     }
 
     /// Sets the bits of the value in `self` based on `condition`.
+    #[inline]
     fn set<T: Into<Self>>(&mut self, other: T, condition: bool) -> &mut Self {
         if condition {
             self.insert(other)
