@@ -139,7 +139,7 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
             }
         }
 
-        impl<T: Into<#name>> #std::ops::BitAnd<T> for #name {
+        impl<T: Into<#name>> ::#std::ops::BitAnd<T> for #name {
             type Output = Self;
 
             #[inline]
@@ -149,14 +149,14 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
             }
         }
 
-        impl<T: Into<#name>> #std::ops::BitAndAssign<T> for #name {
+        impl<T: Into<#name>> ::#std::ops::BitAndAssign<T> for #name {
             #[inline]
             fn bitand_assign(&mut self, rhs: T) {
                 self.#bits.bitand_assign(rhs.into().#bits);
             }
         }
 
-        impl<T: Into<#name>> #std::ops::BitOr<T> for #name {
+        impl<T: Into<#name>> ::#std::ops::BitOr<T> for #name {
             type Output = Self;
 
             #[inline]
@@ -166,14 +166,14 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
             }
         }
 
-        impl<T: Into<#name>> #std::ops::BitOrAssign<T> for #name {
+        impl<T: Into<#name>> ::#std::ops::BitOrAssign<T> for #name {
             #[inline]
             fn bitor_assign(&mut self, rhs: T) {
                 self.#bits.bitor_assign(rhs.into().#bits);
             }
         }
 
-        impl<T: Into<#name>> #std::ops::BitXor<T> for #name {
+        impl<T: Into<#name>> ::#std::ops::BitXor<T> for #name {
             type Output = Self;
 
             #[inline]
@@ -183,14 +183,14 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
             }
         }
 
-        impl<T: Into<#name>> #std::ops::BitXorAssign<T> for #name {
+        impl<T: Into<#name>> ::#std::ops::BitXorAssign<T> for #name {
             #[inline]
             fn bitxor_assign(&mut self, rhs: T) {
                 self.#bits.bitxor_assign(rhs.into().#bits);
             }
         }
 
-        impl<T: Into<#name>> #std::ops::Sub<T> for #name {
+        impl<T: Into<#name>> ::#std::ops::Sub<T> for #name {
             type Output = Self;
 
             #[inline]
@@ -200,14 +200,14 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
             }
         }
 
-        impl<T: Into<#name>> #std::ops::SubAssign<T> for #name {
+        impl<T: Into<#name>> ::#std::ops::SubAssign<T> for #name {
             #[inline]
             fn sub_assign(&mut self, rhs: T) {
                 self.#bits &= !rhs.into().#bits;
             }
         }
 
-        impl #std::ops::Not for #name {
+        impl ::#std::ops::Not for #name {
             type Output = Self;
 
             #[inline]
@@ -216,7 +216,7 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
             }
         }
 
-        impl #std::iter::FromIterator<#item> for #name {
+        impl ::#std::iter::FromIterator<#item> for #name {
             #[inline]
             fn from_iter<T: IntoIterator<Item=#item>>(iter: T) -> Self {
                 iter.into_iter().fold(Self::EMPTY, BitCollection::inserting)
