@@ -240,6 +240,7 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
             type IntoIter = #iter<Self>;
             type Item = #item;
 
+            #[inline]
             fn into_iter(self) -> Self::IntoIter {
                 self.into()
             }
