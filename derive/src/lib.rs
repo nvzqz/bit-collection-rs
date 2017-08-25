@@ -140,14 +140,14 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
         }
 
         impl<'a, T: Clone + Into<#name>> From<&'a T> for #name {
-            #[inline(always)]
+            #[inline]
             fn from(r: &'a T) -> #name {
                 r.clone().into()
             }
         }
 
         impl<'a, T: Clone + Into<#name>> From<&'a mut T> for #name {
-            #[inline(always)]
+            #[inline]
             fn from(r: &'a mut T) -> #name {
                 r.clone().into()
             }
