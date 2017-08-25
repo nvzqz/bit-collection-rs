@@ -35,6 +35,16 @@
 //! #[bit(..., retr = "inner", ...)]
 //! ```
 //!
+//! ## Iterator
+//! The iterator for a given `BitCollection`. If `BitIter` isn't imported as-is,
+//! this option allows for specifying its module path.
+//!
+//! ```rust,ignore
+//! extern crate bit_collection as bc;
+//!
+//! #[bit(..., iter = "bc::BitIter", ...)]
+//! ```
+//!
 //! # Examples
 //!
 //! In computer chess, one popular way of representing the occupants of a board

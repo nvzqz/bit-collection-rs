@@ -55,6 +55,7 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
     let zero = ::syn::Ident::new("0");
     let name = Ident::from(ast.ident.as_ref());
     let mask = get_attr("mask").unwrap_or_else(|| "!0".into());
+    let iter = get_attr("iter").unwrap_or_else(|| "BitIter".into());
     let backing: Ident;
 
     let (bits, from_x, from_x_masked, full, empty) = if let Body::Struct(ref data) = ast.body {
@@ -229,7 +230,7 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
         }
 
         impl IntoIterator for #name {
-            type IntoIter = BitIter<Self>;
+            type IntoIter = #iter<Self>;
             type Item = #item;
 
             fn into_iter(self) -> Self::IntoIter {

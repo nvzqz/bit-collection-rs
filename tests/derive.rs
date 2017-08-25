@@ -1,13 +1,13 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
 #[macro_use]
-extern crate bit_collection;
+extern crate bit_collection as bc;
 
 #[cfg(feature = "std")]
 extern crate core;
 
 use core::fmt::Debug;
-use bit_collection::*;
+use bc::BitCollection;
 
 macro_rules! enum_impl {
     ($(#[$attr:meta])* enum $ident:ident { $($x:ident),* $(,)* }) => {
@@ -103,7 +103,19 @@ macro_rules! impl_test {
     }
 }
 
-impl_test!(bits4_enum,    Value4Enum,    u8,  #[bit(Value4Enum,   mask = "0b1111")]);
-impl_test!(bits4_struct,  Value4Struct,  u8,  #[bit(Value4Struct, mask = "0b1111", retr = "0")]);
-impl_test!(bits16_enum,   Value16Enum,   u16, #[bit(Value16Enum)]);
-impl_test!(bits16_struct, Value16Struct, u16, #[bit(Value16Struct, retr = "0")]);
+impl_test! {
+    bits4_enum, Value4Enum, u8,
+    #[bit(Value4Enum, iter = "bc::BitIter", mask = "0b1111")]
+}
+impl_test! {
+    bits4_struct, Value4Struct, u8,
+    #[bit(Value4Struct, iter = "bc::BitIter", mask = "0b1111", retr = "0")]
+}
+impl_test! {
+    bits16_enum, Value16Enum, u16,
+    #[bit(Value16Enum, iter = "bc::BitIter")]
+}
+impl_test! {
+    bits16_struct, Value16Struct, u16,
+    #[bit(Value16Struct, iter = "bc::BitIter", retr = "0")]
+}
