@@ -216,16 +216,16 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
             }
         }
 
-        impl ::#std::iter::FromIterator<#item> for #name {
+        impl<T: Into<#name>> ::#std::iter::FromIterator<T> for #name {
             #[inline]
-            fn from_iter<T: IntoIterator<Item=#item>>(iter: T) -> Self {
+            fn from_iter<I: IntoIterator<Item=T>>(iter: I) -> Self {
                 iter.into_iter().fold(Self::EMPTY, BitCollection::inserting)
             }
         }
 
-        impl Extend<#item> for #name {
+        impl<T: Into<#name>> Extend<T> for #name {
             #[inline]
-            fn extend<T: IntoIterator<Item=#item>>(&mut self, iter: T) {
+            fn extend<I: IntoIterator<Item=T>>(&mut self, iter: I) {
                 use #std::iter::FromIterator;
                 self.insert(Self::from_iter(iter));
             }
