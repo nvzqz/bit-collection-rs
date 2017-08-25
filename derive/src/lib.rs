@@ -109,8 +109,8 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
         }
     };
 
-    let convert_x = if let Some(a) = get_attr("retr") {
-        quote!(x.#a)
+    let convert_x = if let Some(retr) = get_attr("retr") {
+        quote!(x.#retr)
     } else {
         quote!(x as #backing)
     };
