@@ -1,3 +1,23 @@
+//! Iterate over a collection of bits.
+//!
+//! # Usage
+//!
+//! This crate is available [on crates.io][crate] and can be used by adding the
+//! following to your project's `Cargo.toml`:
+//!
+//! ```toml
+//! [dependencies]
+//! bit_collection = "0.1.1"
+//! ```
+//!
+//! and this to your crate root:
+//!
+//! ```
+//! #[macro_use]
+//! extern crate bit_collection;
+//! # fn main() {}
+//! ```
+//!
 //! # `#[bit]` Attribute
 //!
 //! The `#[bit]` attribute is composed of three parts, two of which are optional
@@ -106,6 +126,7 @@
 //! # fn main() {}
 //! ```
 //!
+//! [crate]: https://crates.io/crates/bit_collection
 //! [`BitCollection`]: trait.BitCollection.html
 //! [`BitIter`]: struct.BitIter.html
 //! [FULL]: trait.BitCollection.html#associatedconstant.FULL
