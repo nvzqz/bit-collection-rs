@@ -17,7 +17,7 @@
 //!
 //! If not provided, the mask is assumed to have all bits set (i.e. `!0`).
 //!
-//! `BitCollection::FULL` returns this value.
+//! [`BitCollection::FULL`][FULL] returns this value.
 //!
 //! ```rust,ignore
 //! #[bit(..., mask = "0b11", ...)]
@@ -36,8 +36,8 @@
 //! ```
 //!
 //! ## Iterator
-//! The iterator for a given `BitCollection`. If `BitIter` isn't imported as-is,
-//! this option allows for specifying its module path.
+//! The iterator for a given [`BitCollection`]. If [`BitIter`] isn't imported
+//! as-is, this option allows for specifying its module path.
 //!
 //! ```rust,ignore
 //! extern crate bit_collection as bc;
@@ -106,6 +106,9 @@
 //! # fn main() {}
 //! ```
 //!
+//! [`BitCollection`]: trait.BitCollection.html
+//! [`BitIter`]: struct.BitIter.html
+//! [FULL]: trait.BitCollection.html#associatedconstant.FULL
 //! [bitboard]: https://chessprogramming.wikispaces.com/Bitboards
 
 #![cfg_attr(not(feature = "std"), no_std)]
