@@ -39,6 +39,9 @@
 //!
 //! [`BitCollection::FULL`][FULL] returns this value.
 //!
+//! **Attention:** Please read the section on [safety](#safety) to ensure
+//! that this is used in a _correct_ and _safe_ manner.
+//!
 //! ```rust,ignore
 //! #[bit(..., mask = "0b11", ...)]
 //! ```
@@ -125,6 +128,19 @@
 //!
 //! # fn main() {}
 //! ```
+//!
+//! # Safety
+//! This crate makes certain assumptions that, if unmet, may have unsafe and
+//! unexpected results.
+//!
+//! The [`mask`](#mask) option for [`#[bit]`](#bit-attribute) _must_ have the
+//! correct bits set. It _must not_ have bits set that correspond to invalid
+//! instances of the bit type.
+//!
+//! Similarly, the bit type must be defined such that corresponding bit patterns
+//! from `mask` provide legitimate values. Ask yourself, do `1 << item` and its
+//! reversal (undo) operations, `pop_{lsb,msb}`, make sense in terms of the
+//! provided mask?
 //!
 //! [crate]: https://crates.io/crates/bit_collection
 //! [`BitCollection`]: trait.BitCollection.html
