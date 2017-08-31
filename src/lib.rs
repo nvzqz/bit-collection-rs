@@ -201,6 +201,13 @@ pub trait BitCollection: From<<Self as IntoIterator>::Item>
         unsafe { &mut *(self as *mut _ as *mut _) }
     }
 
+    /// Converts `self` into the only bit set.
+    #[inline]
+    fn into_bit(mut self) -> Option<Self::Item> {
+        let bit = self.pop_lsb();
+        if self.is_empty() { bit } else { None }
+    }
+
     /// Returns the least significant bit in `self` if `self` is not empty.
     #[inline]
     fn lsb(&self) -> Option<Self::Item> {
