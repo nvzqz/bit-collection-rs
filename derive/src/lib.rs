@@ -29,7 +29,7 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
             }
         }
         None
-    }).next().expect("No `bit` attribute found.");
+    }).next().expect("No `#[bit]` attribute found.");
 
     let item = bit_list.iter().filter_map(|x| {
         if let NestedMetaItem::MetaItem(MetaItem::Word(ref ident)) = *x {
@@ -37,7 +37,7 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
         } else {
             None
         }
-    }).next().expect("No bit item found.");
+    }).next().expect("No bit item found: `#[bit(Item)]`.");
 
     let get_attr = |x: &str| {
         bit_list.iter().filter_map(|a| {
