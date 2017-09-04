@@ -154,6 +154,7 @@
 extern crate core;
 
 use core::borrow::{Borrow, BorrowMut};
+use core::cmp::Ordering;
 use core::iter::FromIterator;
 use core::ops;
 
@@ -411,10 +412,50 @@ impl<C: BitCollection> ExactSizeIterator for BitIter<C> {
 /// How many bits are set in a `BitCollection`.
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Hash)]
 pub enum Quantity {
+    // NOTE: The variant order is optimized for the quantity method
     /// Multiple bits set.
     Multiple,
     /// Single bit set.
     Single,
     /// No bits set.
     None,
+}
+
+impl PartialOrd for Quantity {
+    #[inline]
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+
+    #[inline]
+    fn lt(&self, other: &Self) -> bool {
+        (*self as usize) > (*other as usize)
+    }
+
+    #[inline]
+    fn le(&self, other: &Self) -> bool {
+        (*self as usize) >= (*other as usize)
+    }
+
+    #[inline]
+    fn gt(&self, other: &Self) -> bool {
+        (*self as usize) < (*other as usize)
+    }
+
+    #[inline]
+    fn ge(&self, other: &Self) -> bool {
+        (*self as usize) <= (*other as usize)
+    }
+}
+
+impl Ord for Quantity {
+    #[inline]
+    fn cmp(&self, other: &Self) -> Ordering {
+        use Ordering::*;
+        match (*self as usize).cmp(&(*other as usize)) {
+            Equal => Equal,
+            Greater => Less,
+            Less => Greater,
+        }
+    }
 }
