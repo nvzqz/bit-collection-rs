@@ -340,7 +340,7 @@ pub trait BitCollection: From<<Self as IntoIterator>::Item>
     }
 }
 
-/// An iterator over the bits of a `BitCollection`.
+/// An iterator over the bits of a [`BitCollection`](trait.BitCollection.html).
 #[derive(Copy, Clone, Eq, PartialEq, Debug)]
 pub struct BitIter<C: BitCollection>(pub C);
 
@@ -408,8 +408,8 @@ impl<C: BitCollection> ExactSizeIterator for BitIter<C> {
     }
 }
 
-/// How many bits are set in a `BitCollection` as returned by
-/// [`quantity`](trait.BitCollection.html#method.quantity).
+/// How many bits are set in a [`BitCollection`](trait.BitCollection.html) as
+/// returned by [`quantity`](trait.BitCollection.html#method.quantity).
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Hash)]
 pub enum Quantity {
     // NOTE: The variant order is optimized for the quantity method
