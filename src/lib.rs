@@ -408,7 +408,8 @@ impl<C: BitCollection> ExactSizeIterator for BitIter<C> {
     }
 }
 
-/// How many bits are set in a `BitCollection`.
+/// How many bits are set in a `BitCollection` as returned by
+/// [`quantity`](trait.BitCollection.html#method.quantity).
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Hash)]
 pub enum Quantity {
     // NOTE: The variant order is optimized for the quantity method
