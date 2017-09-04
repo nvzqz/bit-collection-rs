@@ -205,8 +205,7 @@ pub trait BitCollection: From<<Self as IntoIterator>::Item>
     /// [`len`](#tymethod.len).
     ///
     /// This is much more optimal than matching [`len`](#tymethod.len) against
-    /// `0`, `1`, and `_` on platforms without a `popcnt` instruction (or if not
-    /// using native instructions).
+    /// `0`, `1`, and `_`.
     #[inline]
     fn quantity(&self) -> Quantity {
         use self::Quantity::*;
