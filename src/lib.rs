@@ -271,21 +271,25 @@ pub trait BitCollection: From<<Self as IntoIterator>::Item>
     fn contains<T: Into<Self>>(&self, T) -> bool;
 
     /// Returns the result of removing the value from `self`.
+    #[inline]
     fn removing<T: Into<Self>>(self, other: T) -> Self {
         self - other.into()
     }
 
     /// Returns the result of inserting the value into `self`.
+    #[inline]
     fn inserting<T: Into<Self>>(self, other: T) -> Self {
         self | other.into()
     }
 
     /// Returns the result of toggling the bits of the value in `self`.
+    #[inline]
     fn toggling<T: Into<Self>>(self, other: T) -> Self {
         self ^ other.into()
     }
 
     /// Returns the result of intersecting the bits of the value with `self`.
+    #[inline]
     fn intersecting<T: Into<Self>>(self, other: T) -> Self {
         self & other.into()
     }
