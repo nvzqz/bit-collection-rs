@@ -345,7 +345,7 @@ pub trait BitCollection: From<<Self as IntoIterator>::Item>
 }
 
 /// An iterator over the bits of a [`BitCollection`](trait.BitCollection.html).
-#[derive(Copy, Clone, Eq, PartialEq, Debug)]
+#[derive(Copy, Clone, Eq, PartialEq, Debug, Hash)]
 pub struct BitIter<C: BitCollection>(pub C);
 
 impl<C: BitCollection> From<C> for BitIter<C> {
