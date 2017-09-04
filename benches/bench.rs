@@ -5,7 +5,7 @@ extern crate bit_collection;
 extern crate test;
 
 use test::{Bencher, black_box};
-use bit_collection::BitCollection;
+use bit_collection::*;
 
 #[derive(Copy, Clone)]
 enum U8Bit {
@@ -54,5 +54,29 @@ fn bench_naive_iter(b: &mut Bencher) {
             }
         }
         black_box(bits);
+    });
+}
+
+#[bench]
+fn bench_match_len_100(b: &mut Bencher) {
+    b.iter(|| {
+        for _ in 0..100 {
+            let bits = black_box(U8Bits::FULL);
+            let quantity = match bits.len() {
+                0 => Quantity::None,
+                1 => Quantity::Single,
+                _ => Quantity::Multiple,
+            };
+            black_box(quantity);
+        }
+    });
+}
+
+#[bench]
+fn bench_match_quantity_100(b: &mut Bencher) {
+    b.iter(|| {
+        for _ in 0..100 {
+            black_box(black_box(U8Bits::FULL).quantity());
+        }
     });
 }

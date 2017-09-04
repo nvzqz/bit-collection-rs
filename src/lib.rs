@@ -187,6 +187,9 @@ pub trait BitCollection: From<<Self as IntoIterator>::Item>
     const EMPTY: Self;
 
     /// Returns the number of bits set in `self`.
+    ///
+    /// If checking whether `self` has zero, one, or multiple bits set, use
+    /// [`quantity`](#method.quantity).
     fn len(&self) -> usize;
 
     /// Returns whether `self` is empty.
@@ -194,6 +197,26 @@ pub trait BitCollection: From<<Self as IntoIterator>::Item>
 
     /// Returns whether `self` has multiple bits set.
     fn has_multiple(&self) -> bool;
+
+    /// Returns the quantity of bits set.
+    ///
+    /// For an exact measurement of the number of bits set, use
+    /// [`len`](#tymethod.len).
+    ///
+    /// This is much more optimal than matching [`len`](#tymethod.len) against
+    /// `0`, `1`, and `_` on platforms without a `popcnt` instruction (or if not
+    /// using native instructions).
+    #[inline]
+    fn quantity(&self) -> Quantity {
+        use self::Quantity::*;
+        if self.is_empty() {
+            None
+        } else if self.has_multiple() {
+            Multiple
+        } else {
+            Single
+        }
+    }
 
     /// Returns `self` as an iterator over itself.
     #[inline]
@@ -383,4 +406,15 @@ impl<C: BitCollection> ExactSizeIterator for BitIter<C> {
     fn len(&self) -> usize {
         self.0.len()
     }
+}
+
+/// How many bits are set in a `BitCollection`.
+#[derive(Copy, Clone, Debug, Eq, PartialEq, Hash)]
+pub enum Quantity {
+    /// Multiple bits set.
+    Multiple,
+    /// Single bit set.
+    Single,
+    /// No bits set.
+    None,
 }
