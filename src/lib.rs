@@ -428,24 +428,16 @@ impl PartialOrd for Quantity {
     }
 
     #[inline]
-    fn lt(&self, other: &Self) -> bool {
-        (*self as usize) > (*other as usize)
-    }
+    fn lt(&self, other: &Self) -> bool { (*self as usize) > (*other as usize) }
 
     #[inline]
-    fn le(&self, other: &Self) -> bool {
-        (*self as usize) >= (*other as usize)
-    }
+    fn gt(&self, other: &Self) -> bool { (*self as usize) < (*other as usize) }
 
     #[inline]
-    fn gt(&self, other: &Self) -> bool {
-        (*self as usize) < (*other as usize)
-    }
+    fn le(&self, other: &Self) -> bool { (*self as usize) >= (*other as usize) }
 
     #[inline]
-    fn ge(&self, other: &Self) -> bool {
-        (*self as usize) <= (*other as usize)
-    }
+    fn ge(&self, other: &Self) -> bool { (*self as usize) <= (*other as usize) }
 }
 
 impl Ord for Quantity {
