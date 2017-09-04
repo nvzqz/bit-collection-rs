@@ -118,8 +118,9 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
     quote! {
         impl From<#item> for #name {
             #[inline(always)]
-            fn from(x: #item) -> #name {
+            fn from(item: #item) -> #name {
                 const ONE: #backing = 1;
+                let x = item;
                 let x = ONE << #convert_x;
                 #from_x
             }
@@ -134,7 +135,8 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
 
         impl From<#backing> for #name {
             #[inline(always)]
-            fn from(x: #backing) -> #name {
+            fn from(inner: #backing) -> #name {
+                let x = inner;
                 #from_x_masked
             }
         }
@@ -316,8 +318,8 @@ fn impl_bit_collection(ast: &syn::DeriveInput) -> quote::Tokens {
             }
 
             #[inline]
-            fn contains<T: Into<Self>>(&self, x: T) -> bool {
-                let other = x.into().#bits;
+            fn contains<T: Into<Self>>(&self, other: T) -> bool {
+                let other = other.into().#bits;
                 self.#bits & other == other
             }
         }
