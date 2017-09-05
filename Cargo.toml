@@ -9,7 +9,7 @@ categories = ["no-std"]
 description = "A trait for iterating over the individual bits of a collection."
 
 [dependencies.bit_collection_derive]
-version = "=0.2.2"
+version = "0.2.2"
 path = "derive"
 default-features = false
 
