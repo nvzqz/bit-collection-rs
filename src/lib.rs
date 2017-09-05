@@ -75,12 +75,7 @@
 //! is a square on a chess board.
 //!
 //! ```
-//! # #[cfg(not(feature = "std"))]
-//! # extern crate core;
-//! #[macro_use]
-//! extern crate bit_collection;
-//! use bit_collection::*;
-//!
+//! # include!("../templates/imports.rs");
 //! #[derive(Copy, Clone)]
 //! pub struct Square(u8);
 //!
@@ -95,11 +90,7 @@
 //! We can also represent castle rights this way.
 //!
 //! ```
-//! # #[cfg(not(feature = "std"))]
-//! # extern crate core;
-//! # #[macro_use]
-//! # extern crate bit_collection;
-//! # use bit_collection::*;
+//! # include!("../templates/imports.rs");
 //! #[derive(Copy, Clone)]
 //! pub enum CastleRight {
 //!     WhiteKingside,
