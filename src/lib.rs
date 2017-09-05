@@ -210,6 +210,23 @@ pub trait BitCollection: From<<Self as IntoIterator>::Item>
     }
 
     /// Returns `self` as an iterator over itself.
+    ///
+    /// # Examples
+    ///
+    /// This method is useful for partially iterating over a `BitCollection`
+    /// in-place, and thus mutating it.
+    ///
+    /// ```
+    /// # include!("../templates/imports.rs");
+    /// # include!("../templates/castle_rights.rs");
+    /// # fn main() {
+    /// let mut rights = CastleRights::FULL;
+    /// assert_eq!(rights.len(), 4);
+    ///
+    /// for right in rights.as_iter().take(3) { /* ... */ }
+    /// assert_eq!(rights.len(), 1);
+    /// # }
+    /// ```
     #[inline]
     fn as_iter(&mut self) -> &mut BitIter<Self> {
         unsafe { &mut *(self as *mut _ as *mut _) }
